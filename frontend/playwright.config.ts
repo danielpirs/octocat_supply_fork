@@ -27,7 +27,6 @@ export default defineConfig({
       use: {
         ...devices['Desktop Edge'],
         launchOptions: {
-          ...devices['Desktop Edge'].launchOptions,
           // args: ['--headless=new'],
         },
       },
