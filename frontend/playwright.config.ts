@@ -15,6 +15,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    headless: false,
   },
   projects: [
     {
@@ -27,7 +28,7 @@ export default defineConfig({
         ...devices['Desktop Edge'],
         launchOptions: {
           ...devices['Desktop Edge'].launchOptions,
-          args: ['--headless=new'],
+          // args: ['--headless=new'],
         },
       },
     },
