@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
+import AddToCartModal from '../../cart/AddToCartModal';
 
 interface Product {
   productId: number;
@@ -26,6 +27,8 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [cartModalProduct, setCartModalProduct] = useState<Product | null>(null);
+  const [showCartModal, setShowCartModal] = useState(false);
   const { data: products, isLoading, error } = useQuery('products', fetchProducts);
   const { darkMode } = useTheme();
 
@@ -49,16 +52,10 @@ export default function Products() {
     }));
   };
 
-  const handleAddToCart = (productId: number) => {
-    const quantity = quantities[productId] || 0;
-    if (quantity > 0) {
-      // TODO: Implement cart functionality
-      alert(`Added ${quantity} items to cart`);
-      setQuantities((prev) => ({
-        ...prev,
-        [productId]: 0,
-      }));
-    }
+  const handleAddToCart = (product: Product) => {
+    // Open the cart modal for quantity selection
+    setCartModalProduct(product);
+    setShowCartModal(true);
   };
 
   const handleProductClick = (product: Product) => {
@@ -236,13 +233,9 @@ export default function Products() {
                         </button>
                       </div>
                       <button
-                        onClick={() => handleAddToCart(product.productId)}
-                        className={`px-4 py-2 rounded-lg transition-colors ${quantities[product.productId]
-                          ? 'bg-primary hover:bg-accent text-white'
-                          : `${darkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-500'} cursor-not-allowed`
-                          }`}
-                        disabled={!quantities[product.productId]}
-                        aria-label={`Add ${quantities[product.productId] || 0} ${product.name} to cart`}
+                        onClick={() => handleAddToCart(product)}
+                        className="px-4 py-2 rounded-lg transition-colors bg-blue-500 hover:bg-blue-600 text-white"
+                        aria-label={`Add ${product.name} to cart`}
                         id={`add-to-cart-${product.productId}`}
                       >
                         Add to Cart
@@ -303,6 +296,18 @@ export default function Products() {
             </p>
           </div>
         </div>
+      )}
+
+      {/* Add to Cart Modal */}
+      {cartModalProduct && (
+        <AddToCartModal
+          product={cartModalProduct}
+          isOpen={showCartModal}
+          onClose={() => {
+            setShowCartModal(false);
+            setCartModalProduct(null);
+          }}
+        />
       )}
     </div>
   );

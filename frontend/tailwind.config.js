@@ -11,6 +11,9 @@ export default {
         'dark': '#0A0A0A',
         'light': '#F5F5F5',
         'accent': '#8BC34A',
+        'cart': '#3B82F6',
+        'cart-hover': '#2563EB',
+        'cart-light': '#DBEAFE',
         'gray': {
           100: '#f5f5f5',
           200: '#e5e5e5',
